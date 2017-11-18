@@ -15,7 +15,7 @@ RUN cat /etc/passwd | grep nobody > passwd.nobody
 
 ### Run
 
-FROM apline:3.6
+FROM alpine:3.6
 
 # User definition
 COPY --from=builder /build/passwd.nobody /etc/passwd
