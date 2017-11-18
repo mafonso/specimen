@@ -6,11 +6,11 @@ jobs:
   build:
     working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
     docker:
-      - image: docker:17.09.0-ce-git
+      - image: golang:1.9.2
     steps:
       - checkout
-       - setup_remote_docker:
-            version: 17.09.0-ce
+      - setup_remote_docker:
+          version: 17.09.0-ce
       - run:
           name: Build application Docker image
           command: |
