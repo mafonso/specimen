@@ -11,6 +11,11 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: 17.09.0-ce
+      - restore_cache:
+          keys:
+            - v1-{{ .Branch }}
+          paths:
+            - /caches/app.tar
       - run:
           name: Install Docker client
           command: |
@@ -20,6 +25,11 @@ jobs:
             tar -xz -C /tmp -f /tmp/docker-$VER.tgz
             mv /tmp/docker/* /usr/bin
       - run:
+          name: Load Docker image layer cache
+          command: |
+            set +o pipefail
+            docker load -i /caches/app.tar | true
+      - run:
           name: Login to registry
           command: |
              docker login -u $DOCKER_USER -p $DOCKER_PASS quay.io
@@ -28,13 +38,22 @@ jobs:
           command: |
             docker build -t app .
       - run:
-          name: Tag container
+          name: Save Docker image layer cache
           command: |
-             docker tag app quay.io/mafonso/specimen:$CIRCLE_BUILD_NUM
+            mkdir -p /caches
+            docker save -o /caches/app.tar app
       - run:
           name: Push container
           command: |
-             docker push quay.io/mafonso/specimen:$CIRCLE_BUILD_NUM
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              docker tag app quay.io/mafonso/specimen:$CIRCLE_BUILD_NUM
+              docker push quay.io/mafonso/specimen:$CIRCLE_BUILD_NUM
+            fi
+      - save_cache:
+          key: v1-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/app.tar
+
 
   test:
     docker:
