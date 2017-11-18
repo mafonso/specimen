@@ -46,8 +46,8 @@ jobs:
           name: Push container
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              docker tag app quay.io/mafonso/specimen:$CIRCLE_BUILD_NUM
-              docker push quay.io/mafonso/specimen:$CIRCLE_BUILD_NUM
+              docker tag app quay.io/mafonso/specimen:${CIRCLE_SHA1}
+              docker push quay.io/mafonso/specimen:${CIRCLE_SHA1}
             fi
       - save_cache:
           key: v1-{{ .Branch }}-{{ epoch }}
@@ -75,6 +75,10 @@ jobs:
           name: run container
           command: |
              docker images
+      - run:
+           name: run container
+           command: |
+              docker run quay.io/mafonso/specimen:${CIRCLE_SHA1}
 
 workflows:
   version: 2
