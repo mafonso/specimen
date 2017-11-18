@@ -74,11 +74,11 @@ jobs:
       - run:
           name: run container
           command: |
-             docker images
+              docker run -d -p8080:8080 quay.io/mafonso/specimen:${CIRCLE_SHA1}
       - run:
-           name: run container
-           command: |
-              docker run quay.io/mafonso/specimen:${CIRCLE_SHA1}
+          name: Call service
+          command: |
+              curl localhost:8080/status
 
 workflows:
   version: 2
