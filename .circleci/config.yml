@@ -57,14 +57,24 @@ jobs:
 
   test:
     docker:
-        - image: docker:17.05.0-ce-git
+        - image: docker:17.09.0-ce-git
     steps:
       - setup_remote_docker:
           version: 17.09.0-ce
+      - restore_cache:
+          keys:
+            - v1-{{ .Branch }}
+          paths:
+            - /caches/app.tar
+      - run:
+          name: Load Docker image layer cache
+          command: |
+            set +o pipefail
+            docker load -i /caches/app.tar | true
       - run:
           name: run container
           command: |
-             docker run quay.io/mafonso/specimen:$CIRCLE_BUILD_NUM
+             docker images
 
 workflows:
   version: 2
