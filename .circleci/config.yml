@@ -35,13 +35,14 @@ jobs:
           name: Push container
           command: |
              docker push quay.io/mafonso/specimen:$CIRCLE_BUILD_NUM
+
   test:
     docker:
         - image: docker:17.05.0-ce-git
     steps:
       - setup_remote_docker:
           version: 17.09.0-ce
-     - run:
+      - run:
           name: run container
           command: |
              docker run quay.io/mafonso/specimen:$CIRCLE_BUILD_NUM
