@@ -26,7 +26,7 @@ jobs:
       - run:
           name: Login to registry
           command: |
-             docker login -u $DOCKER_USER -p $DOCKER_PASS -e mafonso@gmail.com quay.io
+             docker login -u $DOCKER_USER -p $DOCKER_PASS quay.io
       - run:
           name: Tag container
           command: |
