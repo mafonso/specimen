@@ -30,11 +30,11 @@ jobs:
       - run:
           name: Tag container
           command: |
-             docker tag app quay.io/mafono/specimen:$CIRCLE_BUILD_NUM
+             docker tag app quay.io/mafonso/specimen:$CIRCLE_BUILD_NUM
       - run:
           name: Push container
           command: |
-             docker push quay.io/mafono/specimen:$CIRCLE_BUILD_NUM
+             docker push quay.io/mafonso/specimen:$CIRCLE_BUILD_NUM
 
 
 
