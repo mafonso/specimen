@@ -29,6 +29,8 @@ jobs:
     docker:
       - image: golang:1.9.2
     steps:
+      - setup_remote_docker:
+          version: 17.09.0-ce
       - run:
            name: Install Docker client
            command: |
