@@ -61,6 +61,10 @@ jobs:
     steps:
       - setup_remote_docker:
           version: 17.09.0-ce
+      -run:
+        name: Install dependencies
+        command: |
+          apk add curl
       - restore_cache:
           keys:
             - v1-{{ .Branch }}
